@@ -117,11 +117,13 @@ a:hover { text-decoration: underline; }
   top: 0;
   height: 100dvh;
   overflow-y: auto;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .brand {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.6rem;
   padding: 1rem 1.1rem;
   border-bottom: 1px solid var(--border);
@@ -130,6 +132,11 @@ a:hover { text-decoration: underline; }
   font-size: 1.05rem;
 }
 .brand svg { flex-shrink: 0; }
+
+.mobile-close-btn { display: none; }
+.mobile-brand { display: none; }
+.menu-toggle { display: none; }
+.sidebar-backdrop { display: none; }
 
 .nav { padding: 0.6rem; display: flex; flex-direction: column; gap: 1px; flex: 1; }
 .nav-section {
@@ -145,14 +152,29 @@ a:hover { text-decoration: underline; }
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.5rem 0.65rem;
+  padding: 0.55rem 0.65rem;
   border-radius: var(--radius-sm);
   color: var(--text-muted);
   font-size: 0.9rem;
   font-weight: 500;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.nav-item-content {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+  color: currentColor;
+  flex-shrink: 0;
 }
 .nav a:hover { background: var(--surface-2); color: var(--text); text-decoration: none; }
 .nav a.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.nav a.active .nav-icon { opacity: 1; }
 
 .sidebar-footer {
   border-top: 1px solid var(--border);
@@ -461,21 +483,87 @@ input[type='checkbox'] { width: auto; }
 
 /* --------------------------------------------------------------- responsive */
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @media (max-width: 860px) {
-  .app { flex-direction: column; }
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: static;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    margin-left: -0.35rem;
   }
-  .nav { flex-direction: row; overflow-x: auto; gap: 0.25rem; padding: 0.5rem; }
-  .nav-section { display: none; }
-  .nav a { white-space: nowrap; }
-  .sidebar-footer { display: none; }
+  .menu-toggle:hover {
+    background: var(--surface-2);
+  }
+
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+  }
+  .mobile-brand svg {
+    flex-shrink: 0;
+  }
+
+  .mobile-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+  }
+  .mobile-close-btn:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  .hide-on-mobile {
+    display: none;
+  }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 16, 12, 0.48);
+    backdrop-filter: blur(2px);
+    z-index: 90;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(290px, 82vw);
+    height: 100dvh;
+    z-index: 100;
+    background: var(--surface);
+    transform: translateX(-100%);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: none;
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
+  }
+
   .content { padding: 1rem; }
-  .topbar { padding: 0 1rem; }
+  .topbar { padding: 0 0.85rem; }
 }
 
 /* Area segura en pantallas con notch, para uso instalado en telefono. */
