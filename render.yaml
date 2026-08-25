@@ -1,0 +1,117 @@
+# ---------------------------------------------------------------------------
+# BeeTrace - Blueprint de Render
+#
+# Dos servicios:
+#   beetrace-api  Web service Node con la API REST.
+#   beetrace-web  Static site con la aplicacion web instalable (PWA).
+#
+# La base de datos NO se declara aca: se usa Neon (PostgreSQL gestionado). Su
+# cadena de conexion contiene credenciales, asi que se carga a mano en el panel
+# de Render como variable secreta y nunca se versiona en este archivo.
+#
+# Para desplegar:
+#   1. Render: New > Blueprint, apuntando a este repositorio.
+#   2. Al crear beetrace-api, Render pide DATABASE_URL: pegar ahi la cadena de
+#      Neon (preferentemente la del endpoint agrupado, con sufijo -pooler).
+#   3. El resto de los secretos se generan solos.
+# ---------------------------------------------------------------------------
+
+services:
+  # -------------------------------------------------------------------- API
+  - type: web
+    name: beetrace-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm ci && npm run build
+    # Las migraciones se aplican antes de levantar el proceso web: si fallan,
+    # el deploy no promociona y la version anterior sigue sirviendo.
+    startCommand: npm run start:render
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: API_PREFIX
+        value: api/v1
+      # Cadena de conexion de Neon. sync:false = se carga a mano en el panel,
+      # no se guarda en el repositorio.
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_SSL
+        value: "true"
+      - key: DATABASE_POOL_MAX
+        # El plan gratuito de Neon admite pocas conexiones simultaneas.
+        value: "5"
+      - key: DATABASE_CONNECTION_TIMEOUT_MS
+        # Neon suspende el computo por inactividad; despertarlo tarda segundos.
+        value: "20000"
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_TTL
+        value: 30m
+      - key: JWT_REFRESH_TTL_DAYS
+        value: "14"
+      # Origen permitido: el propio front. Render inyecta el host sin esquema y
+      # el backend lo normaliza a https://
+      - key: CORS_ORIGINS
+        fromService:
+          name: beetrace-web
+          type: web
+          property: host
+      - key: SWAGGER_ENABLED
+        value: "true"
+      - key: SWAGGER_PATH
+        value: docs
+      - key: OUTBOX_ENABLED
+        value: "true"
+      - key: OUTBOX_INTERVAL_MS
+        value: "10000"
+      - key: THROTTLE_TTL_MS
+        value: "60000"
+      - key: THROTTLE_LIMIT
+        value: "240"
+
+  # ------------------------------------------------- Aplicacion web (PWA)
+  - type: web
+    name: beetrace-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    autoDeploy: true
+    envVars:
+      # URL de la API en tiempo de compilacion. Render entrega el host pelado y
+      # el cliente le antepone https://
+      - key: VITE_API_URL
+        fromService:
+          name: beetrace-api
+          type: web
+          property: host
+    routes:
+      # La aplicacion es una SPA: cualquier ruta desconocida devuelve el shell y
+      # el enrutador del cliente resuelve. Sin esto, recargar en /movements da 404.
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      # El service worker debe revalidarse siempre; si se cachea, los usuarios
+      # quedan clavados en una version vieja de la aplicacion.
+      - path: /sw.js
+        name: Cache-Control
+        value: no-cache, no-store, must-revalidate
+      - path: /manifest.webmanifest
+        name: Cache-Control
+        value: no-cache
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin

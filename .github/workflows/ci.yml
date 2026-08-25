@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    name: Backend — build y tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: beetrace_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL_TEST: postgresql://postgres:postgres@localhost:5432/beetrace_test
+      JWT_ACCESS_SECRET: ci-access-secret-con-mas-de-32-caracteres-000001
+      JWT_REFRESH_SECRET: ci-refresh-secret-con-mas-de-32-caracteres-000002
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - run: npm ci
+      - name: Verificación de tipos
+        run: npx tsc --noEmit -p tsconfig.json
+      - name: Compilación
+        run: npm run build
+      - name: El build debe emitir dist/main.js
+        # Esto ya se rompió una vez al agregar los tests al tsconfig: el
+        # compilador empezó a emitir en dist/src/ y el arranque en Render habría
+        # fallado recién en producción.
+        run: test -f dist/main.js && test -f dist/database/migrate.js
+      - name: Tests unitarios
+        run: npm test
+      - name: Tests e2e con PostgreSQL real
+        run: npm run test:e2e
+      - name: Auditoría de dependencias
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  frontend:
+    name: Frontend — build y tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+      - name: Verificación de tipos
+        run: npm run typecheck
+      - name: Tests de la capa offline
+        run: npm test
+      - name: Compilación
+        run: npm run build
+      - name: El build debe generar el service worker y el manifiesto
+        run: test -f dist/sw.js && test -f dist/manifest.webmanifest
+      - name: Auditoría de dependencias
+        run: npm audit --audit-level=high
+        continue-on-error: true

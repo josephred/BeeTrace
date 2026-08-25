@@ -141,3 +141,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Archivos temporales del traspaso inicial (se pueden borrar)
+_to_delete/

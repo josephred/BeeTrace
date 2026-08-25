@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "noUnusedLocals": false,
+    // Sin esto, tsc considera la salida actualizada mientras `deleteOutDir`
+    // acaba de borrar dist/, y el build termina "bien" sin emitir nada.
+    // El sintoma aparece recien en el arranque: no existe dist/main.js.
+    "incremental": false
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "test", "dist", "coverage", "**/*.spec.ts"]
+}
