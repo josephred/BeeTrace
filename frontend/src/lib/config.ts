@@ -11,12 +11,18 @@ const RAW = (import.meta.env.VITE_API_URL ?? '').trim();
 export const API_PREFIX = '/api/v1';
 
 export const apiBaseUrl = ((): string => {
-  if (!RAW) return API_PREFIX; // desarrollo: proxy de Vite
-  const withScheme = RAW.includes('://') ? RAW : `https://${RAW}`;
-  const withoutTrailingSlash = withScheme.replace(/\/+$/, '');
-  return withoutTrailingSlash.endsWith(API_PREFIX)
-    ? withoutTrailingSlash
-    : `${withoutTrailingSlash}${API_PREFIX}`;
+  if (RAW) {
+    const withScheme = RAW.includes('://') ? RAW : `https://${RAW}`;
+    const withoutTrailingSlash = withScheme.replace(/\/+$/, '');
+    return withoutTrailingSlash.endsWith(API_PREFIX)
+      ? withoutTrailingSlash
+      : `${withoutTrailingSlash}${API_PREFIX}`;
+  }
+  // En despliegue en Render, si VITE_API_URL no llego al build:
+  if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
+    return `https://beetrace-api.onrender.com${API_PREFIX}`;
+  }
+  return API_PREFIX; // desarrollo local: proxy de Vite hacia localhost:3000
 })();
 
 /** Health check: cuelga de la raiz del servicio, fuera del prefijo de la API. */

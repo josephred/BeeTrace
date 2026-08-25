@@ -55,13 +55,8 @@ services:
         value: 30m
       - key: JWT_REFRESH_TTL_DAYS
         value: "14"
-      # Origen permitido: el propio front. Render inyecta el host sin esquema y
-      # el backend lo normaliza a https://
       - key: CORS_ORIGINS
-        fromService:
-          name: beetrace-web
-          type: web
-          property: host
+        value: "*"
       - key: SWAGGER_ENABLED
         value: "true"
       - key: SWAGGER_PATH
@@ -84,13 +79,8 @@ services:
     staticPublishPath: ./dist
     autoDeploy: true
     envVars:
-      # URL de la API en tiempo de compilacion. Render entrega el host pelado y
-      # el cliente le antepone https://
       - key: VITE_API_URL
-        fromService:
-          name: beetrace-api
-          type: web
-          property: host
+        value: https://beetrace-api.onrender.com
     routes:
       # La aplicacion es una SPA: cualquier ruta desconocida devuelve el shell y
       # el enrutador del cliente resuelve. Sin esto, recargar en /movements da 404.
