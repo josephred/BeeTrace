@@ -24,7 +24,7 @@ services:
     plan: free
     region: oregon
     rootDir: backend
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     # Las migraciones se aplican antes de levantar el proceso web: si fallan,
     # el deploy no promociona y la version anterior sigue sirviendo.
     startCommand: npm run start:render
@@ -80,7 +80,7 @@ services:
     name: beetrace-web
     runtime: static
     rootDir: frontend
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     staticPublishPath: ./dist
     autoDeploy: true
     envVars:
