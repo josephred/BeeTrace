@@ -30,7 +30,7 @@ import type { AuthenticatedUser } from '../common/types';
 
 const logger = new Logger('seed');
 
-const DEMO_PASSWORD = process.env.SEED_PASSWORD ?? 'BeeTrace2026!';
+const DEMO_PASSWORD = process.env.SEED_PASSWORD ?? 'ApiGestion2026!';
 
 /**
  * Reglas documentales iniciales. La segunda refleja el esquema informado por
@@ -160,7 +160,7 @@ async function main(): Promise<void> {
       auth,
       identity,
       platformAdmin,
-      'productor@beetrace.test',
+      'productor@apigestion.test',
       'Maria Gonzalez',
       'PRODUCTOR',
       orgProductor.id,
@@ -169,7 +169,7 @@ async function main(): Promise<void> {
       auth,
       identity,
       platformAdmin,
-      'sala@beetrace.test',
+      'sala@apigestion.test',
       'Jorge Diaz',
       'SALA',
       orgSala.id,
@@ -178,7 +178,7 @@ async function main(): Promise<void> {
       auth,
       identity,
       platformAdmin,
-      'acopio@beetrace.test',
+      'acopio@apigestion.test',
       'Lucia Ferrari',
       'ACOPIADOR',
       orgAcopio.id,
@@ -187,7 +187,7 @@ async function main(): Promise<void> {
       auth,
       identity,
       platformAdmin,
-      'auditor@beetrace.test',
+      'auditor@apigestion.test',
       'Auditor Externo',
       'AUDITOR',
       null,
@@ -196,7 +196,7 @@ async function main(): Promise<void> {
       auth,
       identity,
       platformAdmin,
-      'laboratorio@beetrace.test',
+      'laboratorio@apigestion.test',
       'Lab Mielab',
       'LABORATORIO',
       orgLab.id,
@@ -536,12 +536,12 @@ async function main(): Promise<void> {
     logger.log(`  Lote de acopio   ${loteAcopio.code}  -> ${loteAcopio.id}`);
     logger.log('');
     logger.log(`  Usuarios de prueba (password: ${DEMO_PASSWORD}):`);
-    logger.log('    admin@beetrace.test        ADMIN');
-    logger.log('    productor@beetrace.test    PRODUCTOR');
-    logger.log('    sala@beetrace.test         SALA');
-    logger.log('    acopio@beetrace.test       ACOPIADOR');
-    logger.log('    auditor@beetrace.test      AUDITOR');
-    logger.log('    laboratorio@beetrace.test  LABORATORIO');
+    logger.log('    admin@apigestion.test        ADMIN');
+    logger.log('    productor@apigestion.test    PRODUCTOR');
+    logger.log('    sala@apigestion.test         SALA');
+    logger.log('    acopio@apigestion.test       ACOPIADOR');
+    logger.log('    auditor@apigestion.test      AUDITOR');
+    logger.log('    laboratorio@apigestion.test  LABORATORIO');
     logger.log('----------------------------------------------------------------');
   } finally {
     await app.close();
@@ -549,7 +549,7 @@ async function main(): Promise<void> {
 }
 
 async function ensureAdmin(auth: AuthService, db: Database): Promise<AuthenticatedUser> {
-  const email = 'admin@beetrace.test';
+  const email = 'admin@apigestion.test';
   const existing = await db.select().from(user).where(eq(user.email, email)).limit(1);
   if (existing.length > 0) {
     const record = existing[0];
@@ -561,7 +561,7 @@ async function ensureAdmin(auth: AuthService, db: Database): Promise<Authenticat
       organizationId: record.organizationId,
     };
   }
-  return auth.register({ email, password: DEMO_PASSWORD, fullName: 'Administrador BeeTrace' });
+  return auth.register({ email, password: DEMO_PASSWORD, fullName: 'Administrador ApiGestion' });
 }
 
 async function createUser(

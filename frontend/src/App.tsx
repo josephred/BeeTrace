@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from './lib/auth';
 import { Layout } from './components/Layout';
+import { RoleRoute } from './components/RoleRoute';
 import { UpdatePrompt } from './components/UpdatePrompt';
 import { Spinner } from './components/ui';
 import { LoginPage } from './pages/LoginPage';
@@ -25,7 +26,7 @@ export const App = () => {
   if (!ready) {
     return (
       <div style={{ display: 'grid', placeItems: 'center', minHeight: '100dvh' }}>
-        <Spinner label="Iniciando BeeTrace…" />
+        <Spinner label="Iniciando ApiGestion…" />
       </div>
     );
   }
@@ -36,19 +37,100 @@ export const App = () => {
         <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
         <Route element={user ? <Layout /> : <Navigate to="/login" replace />}>
           <Route index element={<DashboardPage />} />
-          <Route path="producers" element={<ProducersPage />} />
-          <Route path="establishments" element={<EstablishmentsPage />} />
-          <Route path="apiaries" element={<ApiariesPage />} />
-          <Route path="movements" element={<MovementsPage />} />
-          <Route path="movements/:id" element={<MovementDetailPage />} />
-          <Route path="extractions" element={<ExtractionsPage />} />
-          <Route path="lots" element={<LotsPage />} />
-          <Route path="lots/:id" element={<LotDetailPage />} />
-          <Route path="drums" element={<DrumsPage />} />
+          <Route
+            path="producers"
+            element={
+              <RoleRoute allowedRoles={['ADMIN', 'PRODUCTOR', 'AUDITOR']}>
+                <ProducersPage />
+              </RoleRoute>
+            }
+          />
+          <Route
+            path="establishments"
+            element={
+              <RoleRoute allowedRoles={['ADMIN', 'PRODUCTOR', 'SALA', 'ACOPIADOR', 'FRACCIONADOR', 'AUDITOR']}>
+                <EstablishmentsPage />
+              </RoleRoute>
+            }
+          />
+          <Route
+            path="apiaries"
+            element={
+              <RoleRoute allowedRoles={['ADMIN', 'PRODUCTOR', 'AUDITOR']}>
+                <ApiariesPage />
+              </RoleRoute>
+            }
+          />
+          <Route
+            path="movements"
+            element={
+              <RoleRoute
+                allowedRoles={['ADMIN', 'PRODUCTOR', 'SALA', 'ACOPIADOR', 'FRACCIONADOR', 'TRANSPORTISTA', 'AUDITOR']}
+              >
+                <MovementsPage />
+              </RoleRoute>
+            }
+          />
+          <Route
+            path="movements/:id"
+            element={
+              <RoleRoute
+                allowedRoles={['ADMIN', 'PRODUCTOR', 'SALA', 'ACOPIADOR', 'FRACCIONADOR', 'TRANSPORTISTA', 'AUDITOR']}
+              >
+                <MovementDetailPage />
+              </RoleRoute>
+            }
+          />
+          <Route
+            path="extractions"
+            element={
+              <RoleRoute allowedRoles={['ADMIN', 'SALA', 'ACOPIADOR', 'AUDITOR']}>
+                <ExtractionsPage />
+              </RoleRoute>
+            }
+          />
+          <Route
+            path="lots"
+            element={
+              <RoleRoute allowedRoles={['ADMIN', 'SALA', 'ACOPIADOR', 'FRACCIONADOR', 'LABORATORIO', 'AUDITOR']}>
+                <LotsPage />
+              </RoleRoute>
+            }
+          />
+          <Route
+            path="lots/:id"
+            element={
+              <RoleRoute allowedRoles={['ADMIN', 'SALA', 'ACOPIADOR', 'FRACCIONADOR', 'LABORATORIO', 'AUDITOR']}>
+                <LotDetailPage />
+              </RoleRoute>
+            }
+          />
+          <Route
+            path="drums"
+            element={
+              <RoleRoute allowedRoles={['ADMIN', 'SALA', 'ACOPIADOR', 'FRACCIONADOR', 'EXPORTADOR', 'AUDITOR']}>
+                <DrumsPage />
+              </RoleRoute>
+            }
+          />
           <Route path="trace" element={<TracePage />} />
           <Route path="trace/:direction/:entityType/:id" element={<TracePage />} />
-          <Route path="rules" element={<RulesPage />} />
-          <Route path="audit" element={<AuditPage />} />
+          <Route
+            path="rules"
+            element={
+              <RoleRoute allowedRoles={['ADMIN', 'AUDITOR']}>
+                <RulesPage />
+              </RoleRoute>
+            }
+          />
+          <Route
+            path="audit"
+            element={
+              <RoleRoute allowedRoles={['ADMIN', 'AUDITOR']}>
+                <AuditPage />
+              </RoleRoute>
+            }
+          />
           <Route path="pending" element={<PendingPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, type ReactNode } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 import { useSync } from '../lib/sync';
 import { formatRelative } from '../lib/format';
 import { Badge } from './ui';
 import { InstallPrompt } from './InstallPrompt';
+import type { UserRole } from '../lib/types';
 
 const Logo = () => (
   <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true">
@@ -127,7 +128,33 @@ const Icons = {
   ),
 };
 
-const NAV = [
+interface NavItem {
+  to: string;
+  label: string | ((role?: UserRole) => string);
+  icon: ReactNode;
+  end?: boolean;
+  roles?: UserRole[];
+}
+
+interface NavSection {
+  section: string;
+  items: NavItem[];
+}
+
+const ROLE_NAMES: Record<UserRole, string> = {
+  ADMIN: 'Administrador',
+  PRODUCTOR: 'Productor',
+  SALA: 'Sala de extracción',
+  ACOPIADOR: 'Acopiador',
+  FRACCIONADOR: 'Fraccionador',
+  TRANSPORTISTA: 'Transportista',
+  LABORATORIO: 'Laboratorio',
+  EXPORTADOR: 'Exportador',
+  AUDITOR: 'Auditor SENASA',
+  CONSULTA: 'Consulta',
+};
+
+const NAV: NavSection[] = [
   {
     section: 'Trazabilidad',
     items: [
@@ -138,25 +165,70 @@ const NAV = [
   {
     section: 'Registros',
     items: [
-      { to: '/producers', label: 'Productores', icon: Icons.producers },
-      { to: '/establishments', label: 'Establecimientos', icon: Icons.establishments },
-      { to: '/apiaries', label: 'Apiarios', icon: Icons.apiaries },
+      {
+        to: '/producers',
+        label: (role) => (role === 'PRODUCTOR' ? 'Mi RENAPA' : 'Productores'),
+        icon: Icons.producers,
+        roles: ['ADMIN', 'PRODUCTOR', 'AUDITOR'],
+      },
+      {
+        to: '/establishments',
+        label: 'Establecimientos',
+        icon: Icons.establishments,
+        roles: ['ADMIN', 'PRODUCTOR', 'SALA', 'ACOPIADOR', 'FRACCIONADOR', 'AUDITOR'],
+      },
+      {
+        to: '/apiaries',
+        label: 'Apiarios',
+        icon: Icons.apiaries,
+        roles: ['ADMIN', 'PRODUCTOR', 'AUDITOR'],
+      },
     ],
   },
   {
     section: 'Operación',
     items: [
-      { to: '/movements', label: 'Movimientos', icon: Icons.movements },
-      { to: '/extractions', label: 'Extracciones', icon: Icons.extractions },
-      { to: '/lots', label: 'Lotes', icon: Icons.lots },
-      { to: '/drums', label: 'Tambores', icon: Icons.drums },
+      {
+        to: '/movements',
+        label: 'Movimientos',
+        icon: Icons.movements,
+        roles: ['ADMIN', 'PRODUCTOR', 'SALA', 'ACOPIADOR', 'FRACCIONADOR', 'TRANSPORTISTA', 'AUDITOR'],
+      },
+      {
+        to: '/extractions',
+        label: 'Extracciones',
+        icon: Icons.extractions,
+        roles: ['ADMIN', 'SALA', 'ACOPIADOR', 'AUDITOR'],
+      },
+      {
+        to: '/lots',
+        label: 'Lotes',
+        icon: Icons.lots,
+        roles: ['ADMIN', 'SALA', 'ACOPIADOR', 'FRACCIONADOR', 'LABORATORIO', 'AUDITOR'],
+      },
+      {
+        to: '/drums',
+        label: 'Tambores',
+        icon: Icons.drums,
+        roles: ['ADMIN', 'SALA', 'ACOPIADOR', 'FRACCIONADOR', 'EXPORTADOR', 'AUDITOR'],
+      },
     ],
   },
   {
     section: 'Control',
     items: [
-      { to: '/rules', label: 'Reglas documentales', icon: Icons.rules },
-      { to: '/audit', label: 'Auditoría', icon: Icons.audit },
+      {
+        to: '/rules',
+        label: 'Reglas documentales',
+        icon: Icons.rules,
+        roles: ['ADMIN', 'AUDITOR'],
+      },
+      {
+        to: '/audit',
+        label: 'Auditoría',
+        icon: Icons.audit,
+        roles: ['ADMIN', 'AUDITOR'],
+      },
     ],
   },
 ];
@@ -178,6 +250,31 @@ export const Layout = () => {
     navigate('/login', { replace: true });
   };
 
+  const filteredNav = useMemo(() => {
+    if (!user) return [];
+    return NAV.map((group) => {
+      const visibleItems = group.items.filter(
+        (item) => !item.roles || item.roles.includes(user.role) || user.role === 'ADMIN',
+      );
+      return {
+        ...group,
+        items: visibleItems,
+      };
+    }).filter((group) => group.items.length > 0);
+  }, [user]);
+
+  const formatRoleName = (role?: UserRole): string => {
+    if (!role) return '—';
+    return ROLE_NAMES[role] ?? role;
+  };
+
+  const getItemLabel = (item: NavItem): string => {
+    if (typeof item.label === 'function') {
+      return item.label(user?.role);
+    }
+    return item.label;
+  };
+
   return (
     <div className="app">
       {/* Backdrop oscuro para móvil cuando el menú está abierto */}
@@ -193,7 +290,7 @@ export const Layout = () => {
         <div className="brand">
           <div className="row" style={{ gap: '0.6rem', alignItems: 'center' }}>
             <Logo />
-            <span>BeeTrace</span>
+            <span>ApiGestion</span>
           </div>
           <button
             type="button"
@@ -206,7 +303,7 @@ export const Layout = () => {
         </div>
 
         <nav className="nav">
-          {NAV.map((group) => (
+          {filteredNav.map((group) => (
             <div key={group.section}>
               <div className="nav-section">{group.section}</div>
               {group.items.map((item) => (
@@ -218,7 +315,7 @@ export const Layout = () => {
                 >
                   <span className="nav-item-content">
                     <span className="nav-icon">{item.icon}</span>
-                    <span className="nav-label">{item.label}</span>
+                    <span className="nav-label">{getItemLabel(item)}</span>
                   </span>
                 </NavLink>
               ))}
@@ -245,7 +342,7 @@ export const Layout = () => {
             <strong>{user?.fullName}</strong>
           </div>
           <div className="small faint">
-            {user?.role} · sinc. {formatRelative(lastSyncAt)}
+            {formatRoleName(user?.role)} · sinc. {formatRelative(lastSyncAt)}
           </div>
         </div>
       </aside>
@@ -278,7 +375,7 @@ export const Layout = () => {
 
           <div className="mobile-brand">
             <Logo />
-            <span>BeeTrace</span>
+            <span>ApiGestion</span>
           </div>
 
           <InstallPrompt />

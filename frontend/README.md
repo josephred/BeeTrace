@@ -1,6 +1,6 @@
-# BeeTrace Web
+# ApiGestion Web
 
-Aplicación web instalable (PWA) de BeeTrace. React + TypeScript sobre Vite,
+Aplicación web instalable (PWA) de ApiGestion. React + TypeScript sobre Vite,
 pensada para funcionar **sin conexión** en el campo y sincronizar sola al
 recuperar señal.
 

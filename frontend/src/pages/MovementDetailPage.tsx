@@ -76,7 +76,7 @@ export const MovementDetailPage = () => {
 
       {dte?.syncStatus === 'PENDING_SYNC' && (
         <Notice tone="info">
-          El DT-e está registrado en BeeTrace pero <strong>no sincronizado con SIGSA</strong>. La
+          El DT-e está registrado en ApiGestion pero <strong>no sincronizado con SIGSA</strong>. La
           operación no se pierde: queda pendiente hasta que exista la integración.
         </Notice>
       )}

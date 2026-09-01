@@ -35,7 +35,7 @@ export interface OutboxItem {
   lastAttemptAt?: number;
 }
 
-interface BeeTraceDB extends DBSchema {
+interface ApiGestionDB extends DBSchema {
   cache: {
     key: string;
     value: CachedResponse;
@@ -51,14 +51,14 @@ interface BeeTraceDB extends DBSchema {
   };
 }
 
-const DB_NAME = 'beetrace';
+const DB_NAME = 'apigestion';
 const DB_VERSION = 1;
 
-let dbPromise: Promise<IDBPDatabase<BeeTraceDB>> | null = null;
+let dbPromise: Promise<IDBPDatabase<ApiGestionDB>> | null = null;
 
-export const getDb = (): Promise<IDBPDatabase<BeeTraceDB>> => {
+export const getDb = (): Promise<IDBPDatabase<ApiGestionDB>> => {
   if (!dbPromise) {
-    dbPromise = openDB<BeeTraceDB>(DB_NAME, DB_VERSION, {
+    dbPromise = openDB<ApiGestionDB>(DB_NAME, DB_VERSION, {
       upgrade(db) {
         if (!db.objectStoreNames.contains('cache')) {
           db.createObjectStore('cache', { keyPath: 'key' });

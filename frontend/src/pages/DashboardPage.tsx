@@ -4,17 +4,29 @@ import { useSync } from '../lib/sync';
 import { useResource } from '../lib/useResource';
 import { formatQuantity, formatRelative, humanize } from '../lib/format';
 import { Card, Empty, Notice, Stat, StatusBadge } from '../components/ui';
-import type { Apiary, Lot, Movement, Paginated } from '../lib/types';
+import type { Apiary, Drum, Establishment, Extraction, Lot, Movement, Paginated } from '../lib/types';
 
 export const DashboardPage = () => {
   const { user } = useAuth();
   const { online, pendingCount, failedCount, lastSyncAt } = useSync();
 
-  const movements = useResource<Paginated<Movement>>('/movements?pageSize=5');
-  const lots = useResource<Paginated<Lot>>('/lots?pageSize=5');
-  const apiaries = useResource<Paginated<Apiary>>('/apiaries?pageSize=1');
+  const isProducer = user?.role === 'PRODUCTOR';
+  const isSala = user?.role === 'SALA';
+  const isAcopioOrSimilar =
+    user?.role === 'ACOPIADOR' || user?.role === 'FRACCIONADOR' || user?.role === 'EXPORTADOR';
 
-  const stale = movements.fromCache || lots.fromCache;
+  const movements = useResource<Paginated<Movement>>('/movements?pageSize=5');
+  const lots = useResource<Paginated<Lot>>(!isProducer ? '/lots?pageSize=5' : null);
+  const apiaries = useResource<Paginated<Apiary>>(
+    isProducer || user?.role === 'ADMIN' || user?.role === 'AUDITOR' ? '/apiaries?pageSize=5' : null,
+  );
+  const establishments = useResource<Paginated<Establishment>>(
+    isProducer ? '/establishments?pageSize=1' : null,
+  );
+  const extractions = useResource<Paginated<Extraction>>(isSala ? '/extractions?pageSize=1' : null);
+  const drums = useResource<Paginated<Drum>>(isAcopioOrSimilar ? '/drums?pageSize=1' : null);
+
+  const stale = movements.fromCache || lots.fromCache || apiaries.fromCache;
 
   return (
     <div className="stack">
@@ -50,8 +62,59 @@ export const DashboardPage = () => {
           value={movements.data?.meta.total ?? '—'}
           hint="registrados en su ámbito"
         />
-        <Stat label="Lotes" value={lots.data?.meta.total ?? '—'} hint="unidades de trazabilidad" />
-        <Stat label="Apiarios" value={apiaries.data?.meta.total ?? '—'} hint="unidades productivas" />
+        {isProducer ? (
+          <>
+            <Stat
+              label="Apiarios"
+              value={apiaries.data?.meta.total ?? '—'}
+              hint="unidades productivas"
+            />
+            <Stat
+              label="Establecimientos"
+              value={establishments.data?.meta.total ?? '—'}
+              hint="predios registrados"
+            />
+          </>
+        ) : isSala ? (
+          <>
+            <Stat
+              label="Extracciones"
+              value={extractions.data?.meta.total ?? '—'}
+              hint="procesos realizados"
+            />
+            <Stat
+              label="Lotes"
+              value={lots.data?.meta.total ?? '—'}
+              hint="unidades de trazabilidad"
+            />
+          </>
+        ) : isAcopioOrSimilar ? (
+          <>
+            <Stat
+              label="Lotes"
+              value={lots.data?.meta.total ?? '—'}
+              hint="unidades de acopio"
+            />
+            <Stat
+              label="Tambores"
+              value={drums.data?.meta.total ?? '—'}
+              hint="en inventario"
+            />
+          </>
+        ) : (
+          <>
+            <Stat
+              label="Lotes"
+              value={lots.data?.meta.total ?? '—'}
+              hint="unidades de trazabilidad"
+            />
+            <Stat
+              label="Apiarios"
+              value={apiaries.data?.meta.total ?? '—'}
+              hint="unidades productivas"
+            />
+          </>
+        )}
         <Stat
           label="Pendientes de enviar"
           value={pendingCount + failedCount}
@@ -109,51 +172,100 @@ export const DashboardPage = () => {
           )}
         </Card>
 
-        <Card
-          title="Últimos lotes"
-          actions={
-            <Link to="/lots" className="btn small">
-              Ver todos
-            </Link>
-          }
-          tight
-        >
-          {lots.data && lots.data.data.length > 0 ? (
-            <div className="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Tipo</th>
-                    <th className="num">Disponible</th>
-                    <th>Estado</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {lots.data.data.map((lot) => (
-                    <tr key={lot.id}>
-                      <td className="mono">
-                        <Link to={`/lots/${lot.id}`}>{lot.code}</Link>
-                      </td>
-                      <td>{humanize(lot.lotType)}</td>
-                      <td className="num">
-                        {formatQuantity(lot.availableQuantity, lot.unit)}
-                      </td>
-                      <td>
-                        <StatusBadge status={lot.status} />
-                      </td>
+        {isProducer ? (
+          <Card
+            title="Mis apiarios"
+            actions={
+              <Link to="/apiaries" className="btn small">
+                Ver todos
+              </Link>
+            }
+            tight
+          >
+            {apiaries.data && apiaries.data.data.length > 0 ? (
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Nombre</th>
+                      <th className="num">Colmenas</th>
+                      <th>Estado</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <Empty
-              title="Todavía no hay lotes"
-              description="El lote es la unidad lógica de trazabilidad: agrupa lo recibido o extraído y se materializa en tambores."
-            />
-          )}
-        </Card>
+                  </thead>
+                  <tbody>
+                    {apiaries.data.data.map((apiary) => (
+                      <tr key={apiary.id}>
+                        <td className="mono">{apiary.code}</td>
+                        <td>{apiary.name ?? '—'}</td>
+                        <td className="num">{apiary.hiveCount}</td>
+                        <td>
+                          <StatusBadge status={apiary.status} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <Empty
+                title="Todavía no hay apiarios"
+                description="Los apiarios representan las colmenas geolocalizadas dentro de su establecimiento."
+                action={
+                  <Link to="/apiaries" className="btn btn-primary">
+                    Registrar apiario
+                  </Link>
+                }
+              />
+            )}
+          </Card>
+        ) : (
+          <Card
+            title="Últimos lotes"
+            actions={
+              <Link to="/lots" className="btn small">
+                Ver todos
+              </Link>
+            }
+            tight
+          >
+            {lots.data && lots.data.data.length > 0 ? (
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Tipo</th>
+                      <th className="num">Disponible</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {lots.data.data.map((lot) => (
+                      <tr key={lot.id}>
+                        <td className="mono">
+                          <Link to={`/lots/${lot.id}`}>{lot.code}</Link>
+                        </td>
+                        <td>{humanize(lot.lotType)}</td>
+                        <td className="num">
+                          {formatQuantity(lot.availableQuantity, lot.unit)}
+                        </td>
+                        <td>
+                          <StatusBadge status={lot.status} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <Empty
+                title="Todavía no hay lotes"
+                description="El lote es la unidad lógica de trazabilidad: agrupa lo recibido o extraído y se materializa en tambores."
+              />
+            )}
+          </Card>
+        )}
       </div>
     </div>
   );

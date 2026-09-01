@@ -22,7 +22,7 @@ export class HealthController {
   health() {
     return {
       status: 'ok',
-      service: 'beetrace-api',
+      service: 'apigestion-api',
       uptimeSeconds: Math.floor((Date.now() - this.startedAt) / 1000),
       timestamp: new Date().toISOString(),
     };

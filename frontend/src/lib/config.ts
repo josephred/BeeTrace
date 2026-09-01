@@ -1,7 +1,7 @@
 /**
  * Resolucion de la URL base de la API.
  *
- * Render inyecta el host pelado (`beetrace-api.onrender.com`) cuando se usa
+ * Render inyecta el host pelado (`apigestion-api.onrender.com`) cuando se usa
  * `fromService`, mientras que en desarrollo se prefiere la ruta relativa `/api`
  * para aprovechar el proxy de Vite y evitar CORS. Esta funcion normaliza ambos
  * casos para que el resto del codigo no tenga que pensarlo.
@@ -20,7 +20,7 @@ export const apiBaseUrl = ((): string => {
   }
   // En despliegue en Render, si VITE_API_URL no llego al build:
   if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
-    return `https://beetrace-api.onrender.com${API_PREFIX}`;
+    return `https://apigestion-api.onrender.com${API_PREFIX}`;
   }
   return API_PREFIX; // desarrollo local: proxy de Vite hacia localhost:3000
 })();
@@ -28,4 +28,4 @@ export const apiBaseUrl = ((): string => {
 /** Health check: cuelga de la raiz del servicio, fuera del prefijo de la API. */
 export const healthUrl = apiBaseUrl.replace(new RegExp(`${API_PREFIX}$`), '') + '/health';
 
-export const APP_NAME = 'BeeTrace';
+export const APP_NAME = 'ApiGestion';

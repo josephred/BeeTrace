@@ -57,28 +57,35 @@ const RENAPA_FIELDS: FieldSpec[] = [
 ];
 
 export const ProducersPage = () => {
-  const { canWrite } = useAuth();
+  const { user, canWrite } = useAuth();
   const [search, setSearch] = useState('');
   const [creating, setCreating] = useState(false);
   const [renapaFor, setRenapaFor] = useState<Producer | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
 
+  const isProducerRole = user?.role === 'PRODUCTOR';
+  const isAdminRole = user?.role === 'ADMIN';
+
   const query = search ? `&q=${encodeURIComponent(search)}` : '';
   const list = useResource<Paginated<Producer>>(`/producers?pageSize=50${query}`);
+
+  const canCreateProducer =
+    canWrite && (isAdminRole || (isProducerRole && list.data && list.data.data.length === 0));
 
   return (
     <div className="stack">
       <div className="page-header">
         <div>
-          <h1>Productores</h1>
+          <h1>{isProducerRole ? 'Mi Registro de Productor y RENAPA' : 'Productores'}</h1>
           <p className="lead">
-            El productor es el actor responsable de la actividad. Su RENAPA se registra aparte,
-            porque son cosas distintas: un productor puede existir sin RENAPA vigente.
+            {isProducerRole
+              ? 'Información fiscal y registro RENAPA del productor titular.'
+              : 'El productor es el actor responsable de la actividad. Su RENAPA se registra aparte, porque son cosas distintas: un productor puede existir sin RENAPA vigente.'}
           </p>
         </div>
-        {canWrite && (
+        {canCreateProducer && (
           <button type="button" className="primary" onClick={() => setCreating(true)}>
-            Nuevo productor
+            {isProducerRole ? 'Registrar mis datos de productor' : 'Nuevo productor'}
           </button>
         )}
       </div>

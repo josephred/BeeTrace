@@ -1,7 +1,7 @@
 {
-  "name": "beetrace-web",
+  "name": "apigestion-web",
   "version": "0.1.0",
-  "description": "BeeTrace - aplicacion web instalable (PWA) con modo offline para trazabilidad apicola.",
+  "description": "ApiGestion - aplicacion web instalable (PWA) con modo offline para trazabilidad apicola.",
   "private": true,
   "type": "module",
   "engines": {
