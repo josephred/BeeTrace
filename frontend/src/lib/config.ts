@@ -20,7 +20,8 @@ export const apiBaseUrl = ((): string => {
   }
   // En despliegue en Render, si VITE_API_URL no llego al build:
   if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
-    return `https://apigestion-api.onrender.com${API_PREFIX}`;
+    const apiHost = window.location.hostname.replace('-web.', '-api.');
+    return `https://${apiHost}${API_PREFIX}`;
   }
   return API_PREFIX; // desarrollo local: proxy de Vite hacia localhost:3000
 })();

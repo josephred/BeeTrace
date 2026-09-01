@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ApiGestion">
+  <rect width="64" height="64" rx="14" fill="#f59e0b"/>
+  <g fill="none" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">
+    <path d="M32 12l7 4v8l-7 4-7-4v-8z"/>
+    <path d="M18 34l7 4v8l-7 4-7-4v-8z"/>
+    <path d="M46 34l7 4v8l-7 4-7-4v-8z"/>
+  </g>
+  <path d="M32 32l7 4v8l-7 4-7-4v-8z" fill="#0f172a" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ApiGestion | Trazabilidad Apícola Integral</title>
+  <meta name="description" content="Plataforma digital para la trazabilidad integral de la miel argentina. Conecta a productores, salas de extracción, acopiadores y auditores con cumplimiento SENASA y funcionamiento offline." />
+  <meta name="keywords" content="trazabilidad apicola, miel argentina, SENASA, DTE apicola, RENAPA, RENSPA, sala de extraccion, acopio de miel" />
+  <meta property="og:title" content="ApiGestion | Trazabilidad Apícola Integral" />
+  <meta property="og:description" content="Del apiario al frasco: el hilo digital de la miel argentina con trazabilidad garantizada y modo offline." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background Ambient Glow -->
+  <div class="ambient-glow glow-top" aria-hidden="true"></div>
+  <div class="ambient-glow glow-middle" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">
+          <svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <rect width="64" height="64" rx="16" fill="url(#brandGrad)" />
+            <g fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linejoin="round">
+              <path d="M32 12l7 4v8l-7 4-7-4v-8z" />
+              <path d="M18 34l7 4v8l-7 4-7-4v-8z" />
+              <path d="M46 34l7 4v8l-7 4-7-4v-8z" />
+            </g>
+            <path d="M32 32l7 4v8l-7 4-7-4v-8z" fill="#0f172a" stroke="#ffffff" stroke-width="3.5" stroke-linejoin="round" />
+            <defs>
+              <linearGradient id="brandGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#f59e0b" />
+                <stop offset="1" stop-color="#d97706" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="brand-text">ApiGestion</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#circuito">La Cadena</a>
+        <a href="#trazabilidad">Trazabilidad</a>
+        <a href="#caracteristicas">Características</a>
+        <a href="#normativa">Normativa SENASA</a>
+        <a href="#faq">Preguntas</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://beetrace-web.onrender.com/login" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="btnAccederNav">
+          <span>Ingresar a la App</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+        <button type="button" class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-container">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Trazabilidad Apícola Digital de Extremo a Extremo</span>
+      </div>
+
+      <h1 class="hero-title">
+        Del apiario al frasco:<br />
+        <span class="gradient-text">el hilo digital de la miel</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Conectamos a <strong>Productores, Salas de Extracción, Acopiadores y Fraccionadores</strong> en una sola plataforma. Control de origen, validación automática de DT-e y funcionamiento 100% offline en el campo.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="https://beetrace-web.onrender.com/login" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg" id="btnHeroDemo">
+          <span>Probar Demostración en Vivo</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+        <a href="#circuito" class="btn btn-secondary btn-lg">
+          <span>Conocer el Circuito</span>
+        </a>
+      </div>
+
+      <!-- Hero Metrics Bar -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">100%</div>
+          <div class="metric-label">Trazabilidad Retrospectiva</div>
+          <div class="metric-desc">Desde el tambor hasta las colmenas de origen</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">Offline</div>
+          <div class="metric-label">Modo Campo Sin Señal</div>
+          <div class="metric-desc">PWA instalable con sincronización automática</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">SENASA</div>
+          <div class="metric-label">Resolución 2026 Lista</div>
+          <div class="metric-desc">Exigencia de DT-e en apiario y cierre en sala</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">0 Fraude</div>
+          <div class="metric-label">Grafo Dirigido Inmutable</div>
+          <div class="metric-desc">Balance de masa y precintos auditables</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Actor Showcase (La Cadena) -->
+  <section class="section actors-section" id="circuito">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="pill-label">Roles Especializados</span>
+        <h2>Cada actor con su panel y herramientas exactas</h2>
+        <p class="section-lead">Diseñado para la realidad operativa del sector apícola argentino.</p>
+      </div>
+
+      <!-- Actor Tabs -->
+      <div class="tabs-nav" id="actorTabs">
+        <button class="tab-btn active" data-actor="productor">🌿 Productor</button>
+        <button class="tab-btn" data-actor="sala">🏭 Sala Extracción</button>
+        <button class="tab-btn" data-actor="acopio">📦 Acopiador</button>
+        <button class="tab-btn" data-actor="fraccionador">🍯 Fraccionador</button>
+        <button class="tab-btn" data-actor="auditor">🔍 Auditor / SENASA</button>
+      </div>
+
+      <!-- Actor Content Panels -->
+      <div class="actor-card-container">
+        <!-- Productor -->
+        <div class="actor-content active" id="content-productor">
+          <div class="actor-grid">
+            <div class="actor-info">
+              <span class="actor-tag green">Producción Primaria</span>
+              <h3>El Productor Apícola</h3>
+              <p class="lead-text">Controla sus predios, apiarios y cosechas sin preocuparse por la falta de conectividad.</p>
+              <ul class="feature-checklist">
+                <li><strong>Registro de RENAPA y RENSPA:</strong> Gestión directa de sus credenciales y certificados oficiales.</li>
+                <li><strong>Mapeo de Apiarios y Colmenas:</strong> Registro georreferenciado de unidades productivas y estado sanitario.</li>
+                <li><strong>Despacho con DT-e:</strong> Generación del movimiento de alzas melarias hacia la sala de extracción habilitada.</li>
+                <li><strong>Carga Offline:</strong> Anotaciones en el colmenar que se envían solas al volver a tener señal.</li>
+              </ul>
+            </div>
+            <div class="actor-mockup">
+              <div class="mockup-window">
+                <div class="mockup-header">
+                  <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                  <span class="mockup-title">Panel Productor · ApiGestion</span>
+                </div>
+                <div class="mockup-body">
+                  <div class="mockup-stat-row">
+                    <div class="m-stat"><span>Apiarios</span><strong>6 Activos</strong></div>
+                    <div class="m-stat"><span>Colmenas</span><strong>340</strong></div>
+                    <div class="m-stat"><span>DT-e</span><strong>Vigente</strong></div>
+                  </div>
+                  <div class="mockup-item">
+                    <div class="m-badge ok">Despachado</div>
+                    <div><strong>Mov. #MOV-2026-0042</strong> · 120 alzas a Sala Las Flores</div>
+                  </div>
+                  <div class="mockup-item">
+                    <div class="m-badge info">Apiario Base</div>
+                    <div><strong>Apiario Los Robles</strong> · 85 Colmenas · RENSPA 01.023.0.00124</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sala Extracción -->
+        <div class="actor-content" id="content-sala">
+          <div class="actor-grid">
+            <div class="actor-info">
+              <span class="actor-tag amber">Transformación & Pesaje</span>
+              <h3>Sala de Extracción</h3>
+              <p class="lead-text">Recibe el material melario, valida el DT-e y genera los tambores con precinto y lote.</p>
+              <ul class="feature-checklist">
+                <li><strong>Recepción con Acta de Diferencia:</strong> Control de alzas recibidas vs despachadas y registro de mermas.</li>
+                <li><strong>Cierre de DT-e en SIGSA:</strong> Validación del cumplimiento del transporte sanitario.</li>
+                <li><strong>Procesamiento y Lote de Extracción:</strong> Registro de fecha, operario y rendimiento en kilogramos.</li>
+                <li><strong>Identificación de Tambores:</strong> Asignación de tara, peso neto, número de precinto y rotulado QR.</li>
+              </ul>
+            </div>
+            <div class="actor-mockup">
+              <div class="mockup-window">
+                <div class="mockup-header">
+                  <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                  <span class="mockup-title">Gestión de Extracción · Sala Habilitada</span>
+                </div>
+                <div class="mockup-body">
+                  <div class="mockup-stat-row">
+                    <div class="m-stat"><span>Extracciones</span><strong>14 Lotes</strong></div>
+                    <div class="m-stat"><span>Tambores</span><strong>58 Llenos</strong></div>
+                    <div class="m-stat"><span>Miel Neta</span><strong>17.400 kg</strong></div>
+                  </div>
+                  <div class="mockup-item">
+                    <div class="m-badge ok">Lote Creado</div>
+                    <div><strong>LOTE-EXT-2026-008</strong> · 8 Tambores (2.400 kg) · Muestra enviada</div>
+                  </div>
+                  <div class="mockup-item">
+                    <div class="m-badge warn">DT-e Recibido</div>
+                    <div><strong>DT-e #44921-26</strong> · 90 alzas · Productor Gonzalez</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acopiador -->
+        <div class="actor-content" id="content-acopio">
+          <div class="actor-grid">
+            <div class="actor-info">
+              <span class="actor-tag blue">Concentración & Homogeneización</span>
+              <h3>Acopiador de Miel</h3>
+              <p class="lead-text">Administra existencias de tambores de múltiples salas y consolida partidas comerciales.</p>
+              <ul class="feature-checklist">
+                <li><strong>Ingreso de Tambores con Precinto:</strong> Verificación de integridad física y estado de lote.</li>
+                <li><strong>Mezclas y Homogeneización:</strong> Creación de lotes compuestos sin perder el árbol de procedencia.</li>
+                <li><strong>Análisis de Laboratorio Asociados:</strong> Registro de HMF, humedad, color Pfund y residuos.</li>
+                <li><strong>Despachos de Exportación:</strong> Consolidación de contenedores con historial completo.</li>
+              </ul>
+            </div>
+            <div class="actor-mockup">
+              <div class="mockup-window">
+                <div class="mockup-header">
+                  <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                  <span class="mockup-title">Stock y Despachos · Acopio Central</span>
+                </div>
+                <div class="mockup-body">
+                  <div class="mockup-stat-row">
+                    <div class="m-stat"><span>Stock Tambores</span><strong>142</strong></div>
+                    <div class="m-stat"><span>Lotes Acopio</span><strong>9</strong></div>
+                    <div class="m-stat"><span>En Análisis</span><strong>3 Muestras</strong></div>
+                  </div>
+                  <div class="mockup-item">
+                    <div class="m-badge ok">Stock Disponible</div>
+                    <div><strong>Tambor #TB-99214</strong> · 300 kg · Procedencia: Sala Las Flores</div>
+                  </div>
+                  <div class="mockup-item">
+                    <div class="m-badge info">Lote de Mezcla</div>
+                    <div><strong>LOTE-ACP-2026-03</strong> · 24 Tambores agrupados para Exportación</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fraccionador -->
+        <div class="actor-content" id="content-fraccionador">
+          <div class="actor-grid">
+            <div class="actor-info">
+              <span class="actor-tag purple">Envasado & Consumo Final</span>
+              <h3>Fraccionador</h3>
+              <p class="lead-text">Convierte tambores a granel en productos terminados con código QR para el consumidor.</p>
+              <ul class="feature-checklist">
+                <li><strong>Consumo de Tambores:</strong> Cierre de tambores origen y balance de envasado en frascos.</li>
+                <li><strong>Lotes de Fraccionamiento:</strong> Vinculación del lote comercial con RNE, RNPA y fecha de vencimiento.</li>
+                <li><strong>QR de Transparencia:</strong> El comprador final puede escanear el frasco y ver la región apícola de origen.</li>
+              </ul>
+            </div>
+            <div class="actor-mockup">
+              <div class="mockup-window">
+                <div class="mockup-header">
+                  <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                  <span class="mockup-title">Línea de Envasado · Fraccionadora</span>
+                </div>
+                <div class="mockup-body">
+                  <div class="mockup-stat-row">
+                    <div class="m-stat"><span>Frascos 500g</span><strong>4.800</strong></div>
+                    <div class="m-stat"><span>Tambores Usados</span><strong>8</strong></div>
+                    <div class="m-stat"><span>QR Público</span><strong>Activo</strong></div>
+                  </div>
+                  <div class="mockup-item">
+                    <div class="m-badge ok">Lote Comercial</div>
+                    <div><strong>LOTE-FRAC-500G-012</strong> · Vto: 03/2028 · Miel de Pradera</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auditor / SENASA -->
+        <div class="actor-content" id="content-auditor">
+          <div class="actor-grid">
+            <div class="actor-info">
+              <span class="actor-tag gray">Fiscalización & Control Oficial</span>
+              <h3>Auditor / Inspector SENASA</h3>
+              <p class="lead-text">Auditoría integral transversal de cualquier evento ocurrido en la cadena apícola.</p>
+              <ul class="feature-checklist">
+                <li><strong>Vista Retrospectiva y Prospectiva:</strong> Reconstrucción instantánea del árbol completo de cualquier tambor.</li>
+                <li><strong>Detección de Brechas de Trazabilidad:</strong> Alertas automáticas ante lotes sin DT-e o mermas anómalas.</li>
+                <li><strong>Pistas de Auditoría Inmutables:</strong> Registro con sello de tiempo, usuario actor y correlación de cada clic.</li>
+                <li><strong>Modo Sólo Lectura Seguro:</strong> Garantía de no alteración de registros durante inspecciones.</li>
+              </ul>
+            </div>
+            <div class="actor-mockup">
+              <div class="mockup-window">
+                <div class="mockup-header">
+                  <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                  <span class="mockup-title">Consola de Auditoría y Trazabilidad</span>
+                </div>
+                <div class="mockup-body">
+                  <div class="mockup-stat-row">
+                    <div class="m-stat"><span>Eventos Audit</span><strong>1.482</strong></div>
+                    <div class="m-stat"><span>Huecos Detectados</span><strong>0</strong></div>
+                    <div class="m-stat"><span>Conformidad</span><strong>100%</strong></div>
+                  </div>
+                  <div class="mockup-item">
+                    <div class="m-badge ok">Verificado</div>
+                    <div><strong>Consulta #TB-99214</strong> → Sala #02 → DT-e #44921 → Apiario #0124</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Traceability Section -->
+  <section class="section trace-section" id="trazabilidad">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="pill-label">Grafo de Trazabilidad</span>
+        <h2>Trazabilidad Retrospectiva y Prospectiva en 1 Clic</h2>
+        <p class="section-lead">Cada lote o tambor conoce toda su historia hacia atrás y hacia adelante.</p>
+      </div>
+
+      <div class="trace-demo-box">
+        <div class="trace-flow">
+          <div class="trace-step">
+            <div class="trace-circle">1</div>
+            <h4>Colmenas & Apiario</h4>
+            <p>Geolocalización, RENSPA del predio y registro de cosecha.</p>
+            <span class="trace-badge">Origen</span>
+          </div>
+          <div class="trace-arrow">➔</div>
+
+          <div class="trace-step">
+            <div class="trace-circle">2</div>
+            <h4>Movimiento & DT-e</h4>
+            <p>Emisión electrónica, control sanitario y despacho seguro.</p>
+            <span class="trace-badge">Tránsito</span>
+          </div>
+          <div class="trace-arrow">➔</div>
+
+          <div class="trace-step">
+            <div class="trace-circle">3</div>
+            <h4>Extracción & Tambor</h4>
+            <p>Procesado en sala habilitada, pesaje y precintado.</p>
+            <span class="trace-badge">Lote</span>
+          </div>
+          <div class="trace-arrow">➔</div>
+
+          <div class="trace-step">
+            <div class="trace-circle">4</div>
+            <h4>Acopio / Exportación</h4>
+            <p>Muestreo de laboratorio y consolidación de partidas.</p>
+            <span class="trace-badge">Destino</span>
+          </div>
+        </div>
+
+        <div class="trace-callout">
+          <div class="callout-icon">💡</div>
+          <div class="callout-text">
+            <strong>Algoritmo de Detección de Huecos:</strong> ApiGestion analiza automáticamente si un lote carece de DT-e asociado, si la sala no cerró la recepción o si el balance de masa excede los límites biológicos permitidos.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="section features-section" id="caracteristicas">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="pill-label">Tecnología Robusta</span>
+        <h2>Diseñado para el campo y para auditorías globales</h2>
+        <p class="section-lead">Respondiendo a las exigencias reales de productores y exportadores.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📡</div>
+          <h3>100% Offline-First PWA</h3>
+          <p>La miel se produce en el campo donde no hay 4G. Registra colmenas, apiarios y cosechas sin señal; la app sincroniza sola cuando recuperas cobertura.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📜</div>
+          <h3>Motor de Reglas Documentales</h3>
+          <p>Valida automáticamente la normativa SENASA vigente: exige DT-e para movimientos melarios hacia salas y verifica la vigencia de registros sanitarios.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚖️</div>
+          <h3>Control de Balance de Masa</h3>
+          <p>Previene la adulteración y la mezcla no declarada. Cada kilogramo de miel en tambores debe corresponder a un ingreso de material cosechado.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Aislamiento Multi-Tenant</h3>
+          <p>Cada productor o cooperativa solo accede a sus propios datos. Los inspectores y auditores cuentan con visibilidad transversal sin capacidad de edición.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔬</div>
+          <h3>Muestreo y Calidad</h3>
+          <p>Asocia protocolos fisicoquímicos (humedad, HMF, color) y análisis de contaminantes a lotes específicos con certificados digitales adjuntos.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>Listo para Exportación</h3>
+          <p>Genera reportes de trazabilidad en segundos para cumplir con los requerimientos de la Unión Europea, Estados Unidos y mercados de alta exigencia.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section faq-section" id="faq">
+    <div class="container faq-container">
+      <div class="section-header text-center">
+        <span class="pill-label">Preguntas Frecuentes</span>
+        <h2>Todo lo que necesitas saber</h2>
+      </div>
+
+      <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>¿Puedo utilizar la aplicación en el campo sin señal de internet?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p><strong>Sí.</strong> ApiGestion está construida como una PWA (Progressive Web App) con arquitectura Offline-First. Puedes registrar colmenas, apiarios, movimientos y lecturas en el campo sin conexión. Al regresar a una zona con señal Wi-Fi o datos móviles, la app sincroniza todas las operaciones pendientes de forma transparente.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>¿Quién puede registrar nuevos productores y establecimientos?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>Los productores se registran al darse de alta en la plataforma o a través de un Administrador. Una vez dentro, cada productor administra sus propios predios (asociando su RENSPA) y sus apiarios. Las salas de extracción y centros de acopio dan de alta sus propios establecimientos industriales habilitados.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>¿Cómo se adapta a la normativa SENASA vigente?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>El sistema cuenta con un motor de reglas documentales dinámico que exige el Documento de Tránsito electrónico (DT-e) en el traslado de material melario desde apiarios a salas de extracción, contemplando el esquema de gestión en SIGSA y el cierre formal en la sala receptora.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>¿Se puede probar una versión de demostración?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>Sí, la plataforma cuenta con usuarios de demostración precargados para todos los perfiles (Productor, Sala de Extracción, Acopiador, Auditor SENASA y Administrador) para recorrer todo el circuito de punta a punta.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-banner">
+        <div class="cta-content">
+          <h2>Comienza a digitalizar la trazabilidad de tu miel</h2>
+          <p>Pruébalo gratis hoy mismo con nuestra demo interactiva o integra tu cooperativa.</p>
+          <div class="cta-btns">
+            <a href="https://beetrace-web.onrender.com/login" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg" id="btnCtaFinal">
+              <span>Ingresar a la Plataforma</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <div class="brand">
+          <svg width="24" height="24" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <rect width="64" height="64" rx="14" fill="#f59e0b" />
+            <g fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linejoin="round">
+              <path d="M32 12l7 4v8l-7 4-7-4v-8z" />
+              <path d="M18 34l7 4v8l-7 4-7-4v-8z" />
+              <path d="M46 34l7 4v8l-7 4-7-4v-8z" />
+            </g>
+            <path d="M32 32l7 4v8l-7 4-7-4v-8z" fill="#0f172a" stroke="#ffffff" stroke-width="3.5" stroke-linejoin="round" />
+          </svg>
+          <span class="brand-text">ApiGestion</span>
+        </div>
+        <p class="footer-desc">Plataforma integral de trazabilidad apícola para la República Argentina. Conectando la producción sustentable con los mercados del mundo.</p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Plataforma</h4>
+        <ul>
+          <li><a href="https://beetrace-web.onrender.com/login" target="_blank" rel="noopener noreferrer">Iniciar Sesión</a></li>
+          <li><a href="#circuito">La Cadena</a></li>
+          <li><a href="#trazabilidad">Grafo de Trazabilidad</a></li>
+          <li><a href="#normativa">SENASA 2026</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Contacto & Proyecto</h4>
+        <ul>
+          <li><a href="mailto:contacto@apigestion.ar">contacto@apigestion.ar</a></li>
+          <li><span>Desarrollado para apicultores y exportadores</span></li>
+          <li><span class="badge-tag">Versión 0.1.0 MVP</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-container">
+        <p>© 2026 ApiGestion. Todos los derechos reservados.</p>
+        <p class="faint">Construido con estándares abiertos para la trazabilidad apícola nacional.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
