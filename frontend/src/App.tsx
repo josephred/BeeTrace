@@ -26,7 +26,7 @@ export const App = () => {
   if (!ready) {
     return (
       <div style={{ display: 'grid', placeItems: 'center', minHeight: '100dvh' }}>
-        <Spinner label="Iniciando ApiGestion…" />
+        <Spinner label="Iniciando ApiTrace…" />
       </div>
     );
   }

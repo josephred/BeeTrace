@@ -22,8 +22,8 @@ export default defineConfig({
       },
       includeAssets: ['favicon.svg', 'icons/icon-192.png', 'icons/icon-512.png'],
       manifest: {
-        name: 'ApiGestion - Trazabilidad Apicola',
-        short_name: 'ApiGestion',
+        name: 'ApiTrace - Trazabilidad Apicola',
+        short_name: 'ApiTrace',
         description:
           'Registro y consulta de trazabilidad apicola. Funciona sin conexion y sincroniza al recuperar senal.',
         lang: 'es-AR',

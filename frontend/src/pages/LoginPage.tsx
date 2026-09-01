@@ -87,7 +87,7 @@ export const LoginPage = () => {
               strokeLinejoin="round"
             />
           </svg>
-          <h1 style={{ margin: 0 }}>ApiGestion</h1>
+          <h1 style={{ margin: 0 }}>ApiTrace</h1>
         </div>
 
         <div className="card">

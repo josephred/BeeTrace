@@ -290,7 +290,7 @@ export const Layout = () => {
         <div className="brand">
           <div className="row" style={{ gap: '0.6rem', alignItems: 'center' }}>
             <Logo />
-            <span>ApiGestion</span>
+            <span>ApiTrace</span>
           </div>
           <button
             type="button"
@@ -375,7 +375,7 @@ export const Layout = () => {
 
           <div className="mobile-brand">
             <Logo />
-            <span>ApiGestion</span>
+            <span>ApiTrace</span>
           </div>
 
           <InstallPrompt />

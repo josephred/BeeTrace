@@ -1,6 +1,6 @@
-# Despliegue de la Landing Page de ApiGestion en Vercel (100% Gratis)
+# Despliegue de la Landing Page de ApiTrace en Vercel (100% Gratis)
 
-Esta carpeta contiene la landing page promocional estática de **ApiGestion**, optimizada para carga ultrarrápida, diseño responsive y SEO.
+Esta carpeta contiene la landing page promocional estática de **ApiTrace**, optimizada para carga ultrarrápida, diseño responsive y SEO.
 
 ---
 

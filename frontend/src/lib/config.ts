@@ -29,4 +29,4 @@ export const apiBaseUrl = ((): string => {
 /** Health check: cuelga de la raiz del servicio, fuera del prefijo de la API. */
 export const healthUrl = apiBaseUrl.replace(new RegExp(`${API_PREFIX}$`), '') + '/health';
 
-export const APP_NAME = 'ApiGestion';
+export const APP_NAME = 'ApiTrace';

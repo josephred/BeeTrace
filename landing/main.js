@@ -1,4 +1,4 @@
-// ApiGestion Landing Page Interactions
+// ApiTrace Landing Page Interactions
 
 document.addEventListener('DOMContentLoaded', () => {
   // Mobile Nav Toggle
